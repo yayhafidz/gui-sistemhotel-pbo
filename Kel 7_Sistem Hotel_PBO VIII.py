@@ -12,56 +12,58 @@ class PemesananHotel:
         self.data_pemesanan_list = []  
         self.window = tk.Tk()
         self.window.title("Pemesanan Hotel")
+        self.window.configure(bg='lightblue') 
         self.buat_widget()
 
     def buat_widget(self):
         # Membuat frame untuk input
-        frame_input = tk.Frame(self.window, padx=10, pady=10)
+        frame_input = tk.Frame(self.window, padx=10, pady=10, bg='lightblue') 
         frame_input.pack()
 
-        tk.Label(frame_input, text="Tanggal Check-in (format: DD-MM-YYYY):").grid(row=0, column=0, sticky=tk.W)
+        tk.Label(frame_input, text="Tanggal Check-in (format: DD-MM-YYYY):", bg='lightblue').grid(row=0, column=0, sticky=tk.W)
         self.tanggal_checkin_entry = tk.Entry(frame_input)
         self.tanggal_checkin_entry.grid(row=0, column=1)
 
-        tk.Label(frame_input, text="Jumlah Malam:").grid(row=1, column=0, sticky=tk.W)
+        tk.Label(frame_input, text="Jumlah Malam:", bg='lightblue').grid(row=1, column=0, sticky=tk.W)
         self.jumlah_malam_entry = tk.Entry(frame_input)
         self.jumlah_malam_entry.grid(row=1, column=1)
 
-        tk.Label(frame_input, text="Kelas Kamar:").grid(row=2, column=0, sticky=tk.W)
+        tk.Label(frame_input, text="Kelas Kamar:", bg='lightblue').grid(row=2, column=0, sticky=tk.W)
         self.kelas_hotel_var = tk.StringVar(self.window)
         self.kelas_hotel_var.set("Kamar Standar")
         self.kelas_hotel_optionmenu = tk.OptionMenu(frame_input, self.kelas_hotel_var, *self.kelas_hotel.keys())
         self.kelas_hotel_optionmenu.grid(row=2, column=1)
 
-        tk.Label(frame_input, text="Nama Lengkap:").grid(row=3, column=0, sticky=tk.W)
+        tk.Label(frame_input, text="Nama Lengkap:", bg='lightblue').grid(row=3, column=0, sticky=tk.W)
         self.nama_entry = tk.Entry(frame_input)
         self.nama_entry.grid(row=3, column=1)
 
-        tk.Label(frame_input, text="Nomor Kamar:").grid(row=4, column=0, sticky=tk.W)
+        tk.Label(frame_input, text="Nomor Kamar:", bg='lightblue').grid(row=4, column=0, sticky=tk.W)
         self.nomor_kamar_entry = tk.Entry(frame_input)
         self.nomor_kamar_entry.grid(row=4, column=1)
 
-        tk.Label(frame_input, text="Alamat Email:").grid(row=5, column=0, sticky=tk.W)
+        tk.Label(frame_input, text="Alamat Email:", bg='lightblue').grid(row=5, column=0, sticky=tk.W)
         self.email_entry = tk.Entry(frame_input)
         self.email_entry.grid(row=5, column=1)
 
-        tk.Label(frame_input, text="Nomor Telepon:").grid(row=6, column=0, sticky=tk.W)
+        tk.Label(frame_input, text="Nomor Telepon:", bg='lightblue').grid(row=6, column=0, sticky=tk.W)
         self.telepon_entry = tk.Entry(frame_input)
         self.telepon_entry.grid(row=6, column=1)
 
         # Membuat frame untuk tombol
-        frame_tombol = tk.Frame(self.window, pady=10)
+        frame_tombol = tk.Frame(self.window, pady=10, bg='lightblue')  
         frame_tombol.pack()
 
-        self.tombol_submit = tk.Button(frame_tombol, text="Submit", command=self.submit_data_pemesanan)
+        self.tombol_submit = tk.Button(frame_tombol, text="Submit", command=self.submit_data_pemesanan, bg='green', fg='white') 
         self.tombol_submit.pack(side=tk.LEFT)
 
-        self.tombol_tampilkan = tk.Button(frame_tombol, text="Tampilkan Data Pemesanan", command=self.tampilkan_data_pemesanan)
+        self.tombol_tampilkan = tk.Button(frame_tombol, text="Tampilkan Data Pemesanan", command=self.tampilkan_data_pemesanan, bg='blue', fg='white')  
         self.tombol_tampilkan.pack(side=tk.LEFT)
 
-        self.tombol_hapus = tk.Button(frame_tombol, text="Hapus Data Pemesanan", command=self.hapus_data_pemesanan)
+        # Tombol Hapus Data Pemesanan
+        self.tombol_hapus = tk.Button(frame_tombol, text="Hapus Data Pemesanan", command=self.hapus_data_pemesanan, bg='red', fg='white')  
         self.tombol_hapus.pack(side=tk.LEFT)
-
+        
     def submit_data_pemesanan(self):
         if not all(entry.get() for entry in [self.tanggal_checkin_entry, self.jumlah_malam_entry, self.nama_entry, self.nomor_kamar_entry, self.email_entry, self.telepon_entry]):
             messagebox.showwarning("Kolom Kosong", "Harap isi semua kolom yang diperlukan.")
@@ -88,13 +90,17 @@ class PemesananHotel:
         jendela_data_pemesanan = tk.Toplevel(self.window)
         jendela_data_pemesanan.title("Data Pemesanan")
 
-        tree = ttk.Treeview(jendela_data_pemesanan, columns=list(self.data_pemesanan_list[0].keys()), show="headings")
+        tree = ttk.Treeview(jendela_data_pemesanan, columns=['', *list(self.data_pemesanan_list[0].keys())], show="headings")
         
+        # Add checkboxes to the tree
+        tree.heading('', text='', anchor='w')
+        tree.column('', stretch=tk.NO, width=30)
+
         for col in tree["columns"]:
             tree.heading(col, text=col.capitalize())
 
         for idx, data_pemesanan in enumerate(self.data_pemesanan_list, start=1):
-            values = list(data_pemesanan.values())
+            values = [f"Pemesanan {idx}", *list(data_pemesanan.values())]
             tree.insert("", idx, values=values)
 
         tree.pack()
@@ -109,22 +115,30 @@ class PemesananHotel:
 
         tk.Label(jendela_hapus, text="Pilih Data Pemesanan untuk Dihapus:").pack()
 
-        listbox = tk.Listbox(jendela_hapus, selectmode=tk.SINGLE)
-        listbox.pack()
+        tree = ttk.Treeview(jendela_hapus, columns=['', *list(self.data_pemesanan_list[0].keys())], show="headings")
+        tree.heading('', text='', anchor='w')
+        tree.column('', stretch=tk.NO, width=30)
+
+        for col in tree["columns"]:
+            tree.heading(col, text=col.capitalize())
 
         for idx, data_pemesanan in enumerate(self.data_pemesanan_list, start=1):
-            listbox.insert(tk.END, f"Pemesanan {idx}")
+            values = [f"Pemesanan {idx}", *list(data_pemesanan.values())]
+            tree.insert("", idx, values=values)
 
-        tombol_hapus = tk.Button(jendela_hapus, text="Hapus", command=lambda: self.konfirmasi_hapus(listbox))
+        tree.pack()
+
+        tombol_hapus = tk.Button(jendela_hapus, text="Hapus", command=lambda: self.konfirmasi_hapus(tree))
         tombol_hapus.pack()
 
-    def konfirmasi_hapus(self, listbox):
-        indeks_terpilih = listbox.curselection()
+    def konfirmasi_hapus(self, tree):
+        item_terpilih = tree.selection()
 
-        if indeks_terpilih:
-            indeks_terpilih = indeks_terpilih[0]
-            pemesanan_dihapus = self.data_pemesanan_list.pop(indeks_terpilih)
-            messagebox.showinfo("Pemesanan Dihapus", f"Pemesanan {indeks_terpilih + 1} telah dihapus.")
+        if item_terpilih:
+            idx_terpilih = int(tree.item(item_terpilih, "values")[0].split()[1]) - 1
+            pemesanan_dihapus = self.data_pemesanan_list.pop(idx_terpilih)
+            messagebox.showinfo("Pemesanan Dihapus", f"Pemesanan {idx_terpilih + 1} telah dihapus.")
+            tree.delete(item_terpilih)
         else:
             messagebox.showwarning("Tidak Ada Pilihan", "Harap pilih pemesanan untuk dihapus.")
 
@@ -174,5 +188,6 @@ class PemesananHotel:
     def jalankan(self):
         self.window.mainloop()
 
+# Instantiate and run the application
 pemesanan = PemesananHotel()
 pemesanan.jalankan()
