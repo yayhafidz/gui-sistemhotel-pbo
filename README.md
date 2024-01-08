@@ -1,11 +1,16 @@
 **LAPORAN PROJECT
+
 RESERVASI HOTEL BERBASIS GUI**
+
 Dosen Pembimbing : Irma Handayani, S.KOM., M.CS.,
 
 Oleh :
 Yahya Abdulhafidz (5220411281)
+
 Enggi Wira Praja Putri Taufani (5220411284)
+
 Ahmad Salim Hibatulloh (5220411286)
+
 Rizka Octa Setiani (5220411290)
 
 PROGRAM STUDI INFORMATIKA 
