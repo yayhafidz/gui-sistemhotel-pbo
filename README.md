@@ -1,4 +1,4 @@
-**LAPORAN PROJECT
+**LAPORAN PROJECT /n
 RESERVASI HOTEL BERBASIS GUI**
 Dosen Pembimbing : Irma Handayani, S.KOM., M.CS.,
 
